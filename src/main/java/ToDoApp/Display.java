@@ -293,42 +293,41 @@ public class Display {
     /**
      * User can select a Task and change its due date.
      */
+private int handleUserInput() {
+        while (true) {
+            try {
+                return Integer.parseInt(userInput());
+            } catch (Exception e) {
+                printer.printIndexOutOfReach();
+            }
+        }
+    }
 
     public void editDate() {
         System.out.println("Here you can edit due date of one of below tasks: \n ");
         printer.printIndexAndNameAndDueDateOfTask();
         System.out.println("\n Enter the number in front of the task you want to switch due date (0 -> Return to Menu)");
 
-        try {
-            int getProjectByNumber = Integer.parseInt(userInput());
+        int getSelectedTask = handleUserInput();
 
-            if(getProjectByNumber != 0){
-            Task searched = toDoList.getTaskInToDo(getProjectByNumber - 1);
-            System.out.println("Enter new due date of task " + searched.getTitle() + " below (MM-dd-yyyy)");
-
-            while (true) {
-                try {
-                    searched.setDueDate(sdf.parse(userInput()));
-                    break;
-                } catch (ParseException e) {
-                    printer.printWrongDateFormat();
-                }
-            }
-            System.out.println(searched.getTitle() + " Due Date is set to " + sdf.format(searched.getDueDate()));}
-            else{
-                response();
-            }
-        } catch (NumberFormatException e) {
-            printer.printIndexOutOfReach();
-            editDate();
+        if (getSelectedTask <= 0) {
+            return;
         }
-    }
+            Task searched = toDoList.getTaskInToDo(getSelectedTask - 1);
+            System.out.println("Enter new due date of task " + searched.getTitle() + " below (MM-dd-yyyy)");
+        
+        while (true) {
+                        try {
+                            searched.setDueDate(sdf.parse(userInput()));
+                            break;
+                        } catch (ParseException e) {
+                            printer.printWrongDateFormat();
+                        }
+                    }
+                    System.out.println(searched.getTitle() + " Due Date is set to " + sdf.format(searched.getDueDate()));
 
-    /**
-     * Method contains all functionality that goes into editing a task...
-     * Removing, Marking as Done, Updating
-     */
-
+            
+    }  
 
     public void editTask() {
         //method with all edit subclasses
@@ -387,4 +386,3 @@ public class Display {
     }
 
 }
-
